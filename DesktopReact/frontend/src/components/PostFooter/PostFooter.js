@@ -1,10 +1,9 @@
 import "./PostFooter.css"
 import React, {useEffect, useState} from 'react';
-import {IconButton, SpeedDial, SpeedDialAction, Stack} from "@mui/material";
+import {SpeedDial, SpeedDialAction, Stack} from "@mui/material";
 import Badge from "@mui/material/Badge";
 import {
     AccessibilityNewOutlined,
-    Autorenew,
     FavoriteBorder,
     MessageOutlined,
     Mood,
@@ -38,7 +37,6 @@ const PostFooter = ({postId,reactions}) => { // props needed? review
         setLikeValue(reactions[0][1]) // need an callback
         let reactionsValue = reactions.filter((item) => item[0] !== 0).map(([i,k]) => [i,k]);
         setBadgeValues(reactionsValue)
-        //console.log(reactionsValue)
 
     }
 
@@ -71,8 +69,8 @@ const PostFooter = ({postId,reactions}) => { // props needed? review
         console.log(`click on button ${name}, id ${id}`)
     }
 
-    const getIcon = (icon) => {
-        switch (icon) {
+    const getIcon = (icon) =>{
+        switch(icon){
             case "FavoriteBorder":
                 return <FavoriteBorder/>
             case "Mood":
@@ -89,23 +87,23 @@ const PostFooter = ({postId,reactions}) => { // props needed? review
                 return null
         }
     }
-
+    
     const FooterButton = (id, name, icon, badgeCounter) => {
-        return <SpeedDialAction className=""
-                                key={id}
-                                id={id}
-                                FabProps={{style: {...dialStyle}}} /*Changes the position of the reactions icons, but not the div container*/
-                                icon={
-                                    <StyledBadge
-                                        badgeContent={badgeCounter} /*need pass the index of the id reaction*/
-                                        color="primary"
-                                        max={99}>
-                                        {getIcon(icon)}
-                                    </StyledBadge>
-                                }
-                                onClick={ev => handleReactions(ev, id, name)}
-                                tooltipPlacement="bottom"
-                                tooltipTitle={name}
+        return <SpeedDialAction
+            key={id}
+            id={id}
+            FabProps={{ style:{...footerButtonStyle} }} // Changes the position of the reactions icons, but not the div container
+            icon={
+                <StyledBadge
+                    badgeContent={badgeCounter}
+                    color="primary"
+                    max={99}>
+                        { getIcon(icon) }
+                </StyledBadge>
+            }
+            onClick={ ev => handleReactions(ev, id, name) }
+            tooltipPlacement="bottom"
+            tooltipTitle={name}
         />
     }
 
