@@ -16,6 +16,8 @@ import styled from "@emotion/styled";
 import {actionsNav} from './interactionsConfig.json';
 import FooterReplyModal from "../FooterReplyModal/FooterReplyModal";
 import {dialStyle} from "./reactionsStyle";
+import {reactedPost} from "../../api/post.httpService";
+import {STATUS_OK} from "../../api/httpConfig";
 
 // todo need proper style, and handle from css file
 const StyledBadge = styled(Badge)(({theme}) => ({
