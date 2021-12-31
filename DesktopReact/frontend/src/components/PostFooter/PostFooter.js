@@ -18,6 +18,8 @@ import FooterReplyModal from "../FooterReplyModal/FooterReplyModal";
 import {dialStyle} from "./reactionsStyle";
 import {reactedPost} from "../../api/post.httpService";
 import {STATUS_OK} from "../../api/httpConfig";
+import {useDispatch} from "react-redux";
+import {setModalPost} from "../../store/slices/post.slice";
 
 // todo need proper style, and handle from css file
 const StyledBadge = styled(Badge)(({theme}) => ({
@@ -28,14 +30,14 @@ const StyledBadge = styled(Badge)(({theme}) => ({
     },
 }));
 
-const PostFooter = ({postId, reactions, actualReaction}) => { // props needed? review
-    console.log(actualReaction)
+const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props needed? review
+    //console.log(actualReaction)
 
     // gets values from httpService.js array reactToPost function
     const [badgeValues, setBadgeValues] = useState([])
     const [likeBadgeValue, setLikeBadgeValue] = useState()
     const [replyModal, setReplyModal] = useState(false)
-
+    const dispatch = useDispatch();
     const BadgeCounterValue = () => {
         setLikeBadgeValue(reactions[0][1]) // need an callback
         let reactionsValue = reactions.filter((item) => item[0] !== 0).map(([i,k]) => [i,k]);
@@ -53,10 +55,8 @@ const PostFooter = ({postId, reactions, actualReaction}) => { // props needed? r
     }
 
     const HandleCommentContainer = () => {
-        // review, maybe not needed. Using other method to handle the button
-        // const {stateCallback} = props
-        // stateCallback && stateCallback()
         setReplyModal(!replyModal);
+        dispatch(setModalPost(postData))
     }
 
 
@@ -114,7 +114,7 @@ const PostFooter = ({postId, reactions, actualReaction}) => { // props needed? r
                             onClick={(e) => e.stopPropagation(HandleCommentContainer())}> {/* need review, correct way?*/}
                     <MessageOutlined/>
                 </IconButton>
-                <FooterReplyModal show={replyModal} close={HandleCommentContainer}/>
+                {replyModal ? <FooterReplyModal show={replyModal} close={HandleCommentContainer}/>: null } {/* todo pass postData to the modal from props */}
             </Stack>
             {/*<Stack className="postFooterRepost" direction="row"> todo not implemented yet
                 <IconButton className="repostIconButton" onClick={handleRepost} size="small">
