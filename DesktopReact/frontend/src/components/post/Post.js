@@ -44,7 +44,6 @@ const Post = ({postData}) => {
             navigate(`/post/${postId}`) //todo implement reply feed
         }
     }
-
     return (
         <div className="postWrapper"
         >
@@ -60,7 +59,8 @@ const Post = ({postData}) => {
                 <Stack className="postBody">
                     {postBody ? postBody.toString() : ''}
                 </Stack>
-                <PostFooter  postId={postId} reactions={reactions} stateCallback={ToggleCollapseComment}/>
+                <PostFooter postId={postId} reactions={reactions} actualReaction={reactions}
+                            stateCallback={ToggleCollapseComment}/>
                 {/*<FooterReply show={collapse}/>*/}
             </Card></div>
     );
