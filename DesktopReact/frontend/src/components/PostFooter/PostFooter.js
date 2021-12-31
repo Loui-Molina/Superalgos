@@ -111,7 +111,7 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
         return <div className="footerCommentContainer">
             <Stack className="postFooterComment" direction="row">
                 <IconButton className="commentIconButton" size="small"
-                            onClick={(e) => e.stopPropagation(HandleCommentContainer())}> {/* need review, correct way?*/}
+                            onClick={(e) => e.stopPropagation(HandleCommentContainer)}> {/* need review, correct way?*/}
                     <MessageOutlined/>
                 </IconButton>
                 {replyModal ? <FooterReplyModal show={replyModal} close={HandleCommentContainer}/>: null } {/* todo pass postData to the modal from props */}

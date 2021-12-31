@@ -18,16 +18,13 @@ import {updateProfile} from "../../api/profile.httpService";
 import {STATUS_OK} from "../../api/httpConfig";
 import pfp from "../../images/superalgos.png";
 
-const UserProfileModal = ({user, show, close, updateProfileCallback}) => {
+const UserProfileModal = ({user, close, updateProfileCallback}) => {
     useEffect(() => {
-        return () => {
-            setUserInfo(user);
-        };
+        return () => setUserInfo(user);
     }, []);
 
     const [errorState, setErrorState] = useState(false);
     const [userInfo, setUserInfo] = useState(user);
-    const [changed, setChanged] = useState(false);
 
     const toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -55,31 +52,31 @@ const UserProfileModal = ({user, show, close, updateProfileCallback}) => {
     }
 
     const handleChange = (event) => {
-        if (userInfo[name]) {
-            setErrorState(true);
-        } else {
-            setErrorState(false);
-            setUserInfo({
-                ...userInfo,
-                [event.target.id]: event.target.value
-            });
-        }
-        setChanged(user === userInfo && userInfo && userInfo.name)
+        let newValue = event.target.value;
+        let field = event.target.id;
+        setErrorState(field === 'name' && (!newValue));
+        setUserInfo({
+            ...userInfo,
+            [field]: newValue
+        });
     }
 
     const saveProfile = async () => {
-        console.log(userInfo)
         let {result} = await updateProfile(userInfo).then(response => response.json());
         if (result === STATUS_OK) {
             updateProfileCallback();
             close();
-            //todo show a toast that the profile saved and that it takes a while to apply
         }
     }
 
-    return (<>
-        {show ? <Modal open={show}
-                       onClose={close}>
+    const isEquals = () => {
+        let differentKey = Object.keys(user).find(key => user[key] !== userInfo[key]);
+        return !differentKey;
+    }
+
+    return (
+        <Modal open
+               onClose={close}>
             <Box className="editUserBox" component="form" noValidate autoComplete="off">
                 <CardContent className="userSection">
                     <div className="editProfileHeader">
@@ -183,13 +180,14 @@ const UserProfileModal = ({user, show, close, updateProfileCallback}) => {
                                 />
                             </FormControl></div>
                         <div className="editProfileFooter">
-                            <Button disabled={changed} onClick={saveProfile} variant="outlined">Save</Button>
+                            <Button disabled={errorState || isEquals()} onClick={saveProfile}
+                                    variant="outlined">Save</Button>
                         </div>
                     </div>
                 </CardContent>
             </Box>
-        </Modal> : null}
-    </>);
+        </Modal>
+    );
 };
 
 export default UserProfileModal;
