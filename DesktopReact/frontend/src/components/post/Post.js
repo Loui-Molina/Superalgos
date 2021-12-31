@@ -1,5 +1,4 @@
 import "./Post.css"
-import "./PostContainer.css"
 import React, {useEffect, useState} from 'react';
 import {Avatar, Card, Collapse, Stack, Typography} from "@mui/material";
 import pic from "../../images/superalgos.png"
