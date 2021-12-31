@@ -20,7 +20,7 @@ const FooterReply = () => {
     }
 
     return (
-        <div>
+        <>
             <Divider/>
             <div className="footerReply">
                 <Stack className="footerReplyStack" direction="row">
@@ -51,7 +51,7 @@ const FooterReply = () => {
                     </Button>
                 </Stack>
             </div>
-        </div>
+        </>
     );
 };
 
