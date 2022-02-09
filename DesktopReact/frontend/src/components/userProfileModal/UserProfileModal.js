@@ -116,11 +116,11 @@ const UserProfileModal = ({user, close}) => {
     const handleScale = (e) => {
         const scale = parseFloat(e.target.value);
         setAvatarEditor({ ...avatarEditor, scale });
-        console.log(e.target.value)
+        /*console.log(e.target.value)*/
     }
     const handlePositionChange = position => {
         setAvatarEditor({ ...avatarEditor, position });
-        console.log(position)
+        /*console.log(position)*/
     }
     const setEditorRef = (ed) => {
         editor = ed;
