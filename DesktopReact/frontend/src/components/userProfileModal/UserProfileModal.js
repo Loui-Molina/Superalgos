@@ -48,13 +48,12 @@ const UserProfileModal = ({user, close}) => {
             let newInfo = {...userInfo};
             newInfo.profilePic = await toBase64(profilePic);
             setUserInfo(newInfo);
-            //UserProfileAvatarModal && UserProfileAvatarModal()
             setModalEditAvatar(!modalEditAvatar); // todo needs better approach?
-            /*handleNewImage && handleNewImage();*/
             setAvatarEditor({...avatarEditor, image: profilePic})
         } else {
             alert('Image is too big or in a wrong format')
         }
+
     }
 
     const selectBannerPic = async (e) => {
@@ -108,19 +107,19 @@ const UserProfileModal = ({user, close}) => {
                 ...avatarEditor,
                 croppedImg: croppedImg
             });
-
+            setUserInfo({
+                ...userInfo,
+                profilePic: croppedImg
+            })
         }
         handleClickCallback()
-        console.log("Hello from save button")
     }
     const handleScale = (e) => {
         const scale = parseFloat(e.target.value);
         setAvatarEditor({ ...avatarEditor, scale });
-        /*console.log(e.target.value)*/
     }
     const handlePositionChange = position => {
         setAvatarEditor({ ...avatarEditor, position });
-        /*console.log(position)*/
     }
     const setEditorRef = (ed) => {
         editor = ed;
