@@ -70,8 +70,7 @@ const UserProfileModalView = (props) => {
             <CardMedia
                 className='profileAvatar'
                 alt='ProfilePic'
-                //src={userInfo.profilePic ? `${userInfo.profilePic}` : pfp}
-                src={avatarEditor.croppedImg ? `${avatarEditor.croppedImg}` : userInfo.profilePic} // todo modified for testing
+                src={userInfo.profilePic ? `${userInfo.profilePic}` : pfp}
                 component='img'/>
         </div>
     }
@@ -182,8 +181,7 @@ const UserProfileModalView = (props) => {
                         </Typography>
                         <Button
                             className="editProfileAvatarHeaderApplyButton"
-                            onClick={handleNewImage}
-                        >
+                            onClick={handleNewImage}>
                             Apply
                         </Button>
                     </div>
