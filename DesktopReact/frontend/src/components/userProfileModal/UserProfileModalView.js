@@ -13,7 +13,14 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import "./UserProfileModal.css"
-import {CloseOutlined, Input} from "@mui/icons-material";
+import {
+    AddAPhotoOutlined,
+    AddPhotoAlternateOutlined,
+    CloseOutlined,
+    Input,
+    ZoomInOutlined,
+    ZoomOutOutlined
+} from "@mui/icons-material";
 import pfp from "../../images/superalgos.png";
 import AvatarEditor from "react-avatar-editor";
 import UserProfileAvatarModal from "./UserProfileAvatarModal";
@@ -29,8 +36,10 @@ const UserProfileModalView = (props) => {
         errorState,
         close,
         modalEditAvatar,
-        handleClickCallback,
+        modalEditBanner,
+        avatarEditorClose,
         avatarEditor,
+        bannerEditor,
         handleNewImage,
         handleScale,
         handlePositionChange,
@@ -76,23 +85,23 @@ const UserProfileModalView = (props) => {
     }
 
     const profilePic = () => {
-        return <label htmlFor="profilePic">
+        return <label htmlFor="profilePic" className="profileUploadButton">
             <Input className="input" accept="image/*" id="profilePic" multiple type="file"
                    onChange={selectProfilePic}
             />
-            <Button className="profilePicButtons" variant="outlined" component="span">
-                Upload Profile Picture
+            <Button className="profilePicButtons" component="span" size="small">
+                <AddAPhotoOutlined/>
             </Button>
         </label>
     }
 
     const bannerPic = () => {
         return <div>
-            <label htmlFor="bannerPic">
+            <label htmlFor="bannerPic" className="bannerUploadButton">
                 <Input className="input" accept="image/*" id="bannerPic" multiple type="file"
                        onChange={selectBannerPic}/>
-                <Button className="profilePicButtons" variant="outlined" component="span">
-                    Upload Banner Picture
+                <Button className="profilePicButtons" component="span">
+                    <AddAPhotoOutlined/>
                 </Button>
             </label>
         </div>
@@ -168,43 +177,65 @@ const UserProfileModalView = (props) => {
         )
     }
 
+    const modalEditAvatarHeader = () => {
+        return (<>
+            <IconButton onClick={avatarEditorClose}>
+                <CloseOutlined/>
+            </IconButton>
+            <Typography>
+                Edit media
+            </Typography>
+            <Button variant="outlined"
+                className="editProfileAvatarHeaderApplyButton"
+                onClick={handleNewImage}>
+                Apply
+            </Button>
+        </>)
+    }
+
+    const modalEditAvatarBody = () => {
+        return (<>
+            <AvatarEditor className="reactAvatarEditor"
+                          image={avatarEditor.image}
+                          width={avatarEditor.width}
+                          height={avatarEditor.height}
+                          borderRadius={avatarEditor.borderRadius}
+                          scale={parseFloat(avatarEditor.scale)}
+                          position={avatarEditor.position}
+                          onPositionChange={handlePositionChange}
+                          ref={setEditorRef}
+            />
+        </>)
+    }
+
+    const modalEditAvatarFooter = () => {
+        return (<>
+            <ZoomOutOutlined/>
+            <input className="editProfileAvatarFooterZoom"
+                name="scale"
+                type="range"
+                onChange={handleScale}
+                min={avatarEditor.allowZoomOut ? '0.1' : '1'}
+                max="2"
+                step="0.01"
+                defaultValue="1"
+            /><ZoomInOutlined/>
+        </>)
+    }
+
     return (<>
             <Modal open={modalEditAvatar}
-                   onClose={handleClickCallback}>
+                   onClose={avatarEditorClose}>
                 <Box className="editProfileAvatar">
                     <div className="editProfileAvatarHeader">
-                        <IconButton onClick={handleClickCallback}>
-                            <CloseOutlined/>
-                        </IconButton>
-                        <Typography>
-                            Edit media
-                        </Typography>
-                        <Button
-                            className="editProfileAvatarHeaderApplyButton"
-                            onClick={handleNewImage}>
-                            Apply
-                        </Button>
+                        {modalEditAvatarHeader()}
                     </div>
-                    <AvatarEditor className="reactAvatarEditor"
-                                  image={avatarEditor.image}
-                                  width={avatarEditor.width}
-                                  height={avatarEditor.height}
-                                  borderRadius={avatarEditor.borderRadius}
-                                  scale={parseFloat(avatarEditor.scale)}
-                                  position={avatarEditor.position}
-                                  onPositionChange={handlePositionChange}
-                                  ref={setEditorRef}
-                    />
-                    Zoom:
-                    <input
-                        name="scale"
-                        type="range"
-                        onChange={handleScale}
-                        min={avatarEditor.allowZoomOut ? '0.1' : '1'}
-                        max="2"
-                        step="0.01"
-                        defaultValue="1"
-                    />
+                    <div className="editProfileAvatarBody">
+                        {modalEditAvatarBody()}
+                    </div>
+                    <div className="editProfileAvatarFooter">
+                        {modalEditAvatarFooter()}
+                    </div>
                 </Box>
             </Modal>
             <Modal open
