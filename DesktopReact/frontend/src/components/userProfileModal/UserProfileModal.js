@@ -20,7 +20,7 @@ const UserProfileModal = ({user, close}) => {
             image: userInfo.profilePic,
             croppedImg: '',
             allowZoomOut: false,
-            position: { x: 0.5, y: 0.5 },
+            position: {x: 0.5, y: 0.5},
             scale: 1,
             rotate: 0,
             borderRadius: 200,
