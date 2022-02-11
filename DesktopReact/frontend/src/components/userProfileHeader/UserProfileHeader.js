@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Card, CardContent, CardMedia, Typography} from "@mui/material";
+import {Button, CardContent, CardMedia, Typography} from "@mui/material";
 import "./UserProfileHeader.css"
 import UserProfileModal from "../userProfileModal/UserProfileModal";
 import {DateRangeOutlined, LocationOnOutlined} from "@mui/icons-material";
