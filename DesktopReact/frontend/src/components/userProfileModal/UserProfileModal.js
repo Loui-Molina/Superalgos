@@ -14,9 +14,24 @@ const UserProfileModal = ({user, close}) => {
     const [userInfo, setUserInfo] = useState(user);
     const [modalEditAvatar, setModalEditAvatar] = useState(false);
     const handleClickCallback = () => setModalEditAvatar(!modalEditAvatar);
+    const [modalEditBanner, setModalEditBanner] = useState(false);
     const [avatarEditor, setAvatarEditor] = useState(
         {
             image: userInfo.profilePic,
+            croppedImg: '',
+            allowZoomOut: false,
+            position: { x: 0.5, y: 0.5 },
+            scale: 1,
+            rotate: 0,
+            borderRadius: 200,
+            preview: null,
+            width: 300,
+            height: 300,
+        }
+    )
+    const [bannerEditor, setBannerEditor] = useState(
+        {
+            image: userInfo.bannerPic,
             croppedImg: '',
             allowZoomOut: false,
             position: { x: 0.5, y: 0.5 },
@@ -43,7 +58,6 @@ const UserProfileModal = ({user, close}) => {
 
     const selectProfilePic = async (e) => {
         let profilePic = e.target.files[0];
-
         if (profilePic && validateFileSize(profilePic, 0.4)) {
             let newInfo = {...userInfo};
             newInfo.profilePic = await toBase64(profilePic);
@@ -62,6 +76,9 @@ const UserProfileModal = ({user, close}) => {
             let newInfo = {...userInfo};
             newInfo.bannerPic = await toBase64(bannerPic);
             setUserInfo(newInfo)
+            setModalEditBanner(true)
+            setModalEditAvatar(!modalEditAvatar); // todo needs better approach?
+            setBannerEditor({...bannerEditor, image: bannerPic})
         } else {
             alert('Image is too big or in a wrong format')
         }
@@ -101,8 +118,7 @@ const UserProfileModal = ({user, close}) => {
     }*/
     const handleNewImage = (e) => {
         if (setEditorRef) {
-            const canvasScaled = editor.getImageScaledToCanvas();
-            const croppedImg = canvasScaled.toDataURL();
+            const croppedImg = editor.getImageScaledToCanvas().toDataURL();
             setAvatarEditor({
                 ...avatarEditor,
                 croppedImg: croppedImg
@@ -112,17 +128,25 @@ const UserProfileModal = ({user, close}) => {
                 profilePic: croppedImg
             })
         }
-        handleClickCallback()
+        handleClickCallback();
     }
+
     const handleScale = (e) => {
         const scale = parseFloat(e.target.value);
         setAvatarEditor({ ...avatarEditor, scale });
     }
+
     const handlePositionChange = position => {
         setAvatarEditor({ ...avatarEditor, position });
     }
+
     const setEditorRef = (ed) => {
         editor = ed;
+    };
+
+    const avatarEditorClose = () => {
+            setUserInfo({...user});
+            setModalEditAvatar(!modalEditAvatar)
     };
 
     return <UserProfileModalView
@@ -135,8 +159,10 @@ const UserProfileModal = ({user, close}) => {
         errorState={errorState}
         close={close}
         modalEditAvatar={modalEditAvatar}
-        handleClickCallback={handleClickCallback}
+        modalEditBanner={modalEditBanner}
+        avatarEditorClose={avatarEditorClose}
         avatarEditor={avatarEditor}
+        bannerEditor={bannerEditor}
         handleNewImage={handleNewImage}
         handleScale={handleScale}
         handlePositionChange={handlePositionChange}
