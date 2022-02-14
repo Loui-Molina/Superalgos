@@ -92,6 +92,7 @@ const UserProfileModalView = (props) => {
             />
             <Button className="profilePicButtons" component="span" size="small">
                 <AddAPhotoOutlined/>
+                <span className="editProfileTooltipText">Add photo</span>
             </Button>
         </label>
     }
@@ -103,6 +104,7 @@ const UserProfileModalView = (props) => {
                        onChange={selectBannerPic}/>
                 <Button className="profilePicButtons" component="span">
                     <AddAPhotoOutlined/>
+                    <span className="editProfileTooltipText">Add photo</span>
                 </Button>
             </label>
         </div>
@@ -197,12 +199,12 @@ const UserProfileModalView = (props) => {
     const modalEditAvatarBody = () => {
         return (<>
             <AvatarEditor className="reactAvatarEditor"
-                          image={avatarEditor.image}
-                          width={avatarEditor.width}
-                          height={avatarEditor.height}
-                          borderRadius={avatarEditor.borderRadius}
-                          scale={parseFloat(avatarEditor.scale)}
-                          position={avatarEditor.position}
+                          image={modalEditBanner ? bannerEditor.image : avatarEditor.image}
+                          width={modalEditBanner ? bannerEditor.width : avatarEditor.width}
+                          height={modalEditBanner ? bannerEditor.height : avatarEditor.height}
+                          borderRadius={modalEditBanner ? bannerEditor.borderRadius : avatarEditor.borderRadius}
+                          scale={parseFloat(modalEditBanner ? bannerEditor.scale : avatarEditor.scale)}
+                          position={modalEditBanner ? bannerEditor.position : avatarEditor.position}
                           onPositionChange={handlePositionChange}
                           ref={setEditorRef}
             />
@@ -216,7 +218,7 @@ const UserProfileModalView = (props) => {
                 name="scale"
                 type="range"
                 onChange={handleScale}
-                min={avatarEditor.allowZoomOut ? '0.1' : '1'}
+                min={modalEditBanner ? bannerEditor.allowZoomOut ? '0.1' : '1' : avatarEditor.allowZoomOut ? '0.1' : '1'}
                 max="2"
                 step="0.01"
                 defaultValue="1"
