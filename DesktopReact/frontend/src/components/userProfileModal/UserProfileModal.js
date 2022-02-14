@@ -15,6 +15,7 @@ const UserProfileModal = ({user, close}) => {
     const [modalEditAvatar, setModalEditAvatar] = useState(false);
     const handleClickCallback = () => setModalEditAvatar(!modalEditAvatar);
     const [modalEditBanner, setModalEditBanner] = useState(false);
+    const [currentAvatarEditPic, setCurrentAvatarEditPic] = useState();
     const [avatarEditor, setAvatarEditor] = useState(
         {
             image: userInfo.profilePic,
@@ -37,7 +38,7 @@ const UserProfileModal = ({user, close}) => {
             position: { x: 0.5, y: 0.5 },
             scale: 1,
             rotate: 0,
-            borderRadius: 200,
+            borderRadius: 0,
             preview: null,
             width: 300,
             height: 300,
@@ -109,7 +110,7 @@ const UserProfileModal = ({user, close}) => {
         let differentKey = Object.keys(user).find(key => user[key] !== userInfo[key]);
         return !differentKey;
     }
-    /*const UserProfileAvatarModal = () => {
+    /*const UserProfileAvatarModal = () => { // this will be used in the future, on destructuring.
         return <UserProfileAvatarModal
             modalEditAvatar={modalEditAvatar}
             selectProfilePic={selectProfilePic}
@@ -119,14 +120,27 @@ const UserProfileModal = ({user, close}) => {
     const handleNewImage = (e) => {
         if (setEditorRef) {
             const croppedImg = editor.getImageScaledToCanvas().toDataURL();
-            setAvatarEditor({
-                ...avatarEditor,
-                croppedImg: croppedImg
-            });
-            setUserInfo({
-                ...userInfo,
-                profilePic: croppedImg
-            })
+            if(avatarEditor.image === userInfo.image) {
+                setModalEditBanner(false);
+                setAvatarEditor({
+                    ...avatarEditor,
+                    croppedImg: croppedImg
+                });
+                setUserInfo({
+                    ...userInfo,
+                    profilePic: croppedImg
+                })
+            } else if (bannerEditor.image === userInfo.image) {
+                setModalEditAvatar(false);
+                setBannerEditor({
+                    ...bannerEditor,
+                    croppedImg: croppedImg
+                });
+                setUserInfo({
+                    ...userInfo,
+                    profilePic: croppedImg
+                })
+            }
         }
         handleClickCallback();
     }
@@ -146,7 +160,8 @@ const UserProfileModal = ({user, close}) => {
 
     const avatarEditorClose = () => {
             setUserInfo({...user});
-            setModalEditAvatar(!modalEditAvatar)
+            setModalEditAvatar(false);
+            setModalEditBanner(false);
     };
 
     return <UserProfileModalView
