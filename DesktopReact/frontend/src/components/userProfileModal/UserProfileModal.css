@@ -126,6 +126,11 @@
     background: rgba(15, 20, 25, 0.4);
 }
 
+.profileUploadButton:hover .editProfileTooltipText {
+    visibility: visible;
+    transition-delay: 0.5s;
+}
+
 .bannerUploadButton {
     position: absolute;
     top: 135px;
@@ -137,8 +142,13 @@
     border-radius: 20px;
 }
 
-.bannerUploadButton:hover {
+.bannerUploadButton:hover{
     background: rgba(15, 20, 25, 0.4);
+}
+
+.bannerUploadButton:hover .editProfileTooltipText {
+    visibility: visible;
+    transition-delay: 0.5s;
 }
 
 .editProfileFooter {
@@ -159,4 +169,32 @@
     min-height: 43px !important;
     padding: 9px !important;
     color: rgb(255, 255, 255) !important;
+}
+
+.editProfileTooltipText {
+    visibility: hidden;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 1px 0;
+    position: absolute;
+    z-index: 1;
+    top: 110%;
+    left: 50%;
+    margin-left: -50px; /* (width/2 = margin-left) to center */
+    transition-delay: 0s;
+
+}
+
+.editProfileTooltipText::after { /* just the arrow on the top of the tooltip */
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
 }
