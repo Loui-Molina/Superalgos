@@ -3,6 +3,7 @@ import AvatarEditor from "react-avatar-editor";
 import ReactAvatarEditor from 'react-avatar-editor';
 import {Modal} from "@mui/material";
 
+// this will be used in the future, on destructuring.
 const UserProfileAvatarModal = (props) => {
 
     const {
