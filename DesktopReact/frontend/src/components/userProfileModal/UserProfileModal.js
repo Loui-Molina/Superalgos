@@ -15,7 +15,6 @@ const UserProfileModal = ({user, close}) => {
     const [modalEditAvatar, setModalEditAvatar] = useState(false);
     const handleClickCallback = () => setModalEditAvatar(!modalEditAvatar);
     const [modalEditBanner, setModalEditBanner] = useState(false);
-    const [currentAvatarEditPic, setCurrentAvatarEditPic] = useState();
     const [avatarEditor, setAvatarEditor] = useState(
         {
             image: userInfo.profilePic,
@@ -63,6 +62,7 @@ const UserProfileModal = ({user, close}) => {
             let newInfo = {...userInfo};
             newInfo.profilePic = await toBase64(profilePic);
             setUserInfo(newInfo);
+            setModalEditBanner(false)
             setModalEditAvatar(!modalEditAvatar); // todo needs better approach?
             setAvatarEditor({...avatarEditor, image: profilePic})
         } else {
