@@ -16,7 +16,6 @@ import styled from "@emotion/styled";
 import "./UserProfileModal.css"
 import {
     AddAPhotoOutlined,
-    AddPhotoAlternateOutlined,
     CloseOutlined,
     Input,
     ZoomInOutlined,
@@ -24,7 +23,6 @@ import {
 } from "@mui/icons-material";
 import pfp from "../../images/superalgos.png";
 import AvatarEditor from "react-avatar-editor";
-import UserProfileAvatarModal from "./UserProfileAvatarModal";
 
 const UserProfileModalView = (props) => {
     const {
