@@ -8,7 +8,7 @@ import {validateFileSize} from "../../utils/helper";
 import UserProfileAvatarModal from "./UserProfileAvatarModal";
 
 const UserProfileModal = ({user, close}) => {
-    const loadedSocialPersona = useSelector(state => state.profile.socialPersona)
+    const loadedSocialPersona = useSelector(state => state.profile.socialPersona);
     const dispatch = useDispatch();
     const [errorState, setErrorState] = useState(false);
     const [userInfo, setUserInfo] = useState(user);
@@ -28,7 +28,7 @@ const UserProfileModal = ({user, close}) => {
             width: 300,
             height: 300,
         }
-    )
+    );
     const [bannerEditor, setBannerEditor] = useState(
         {
             image: userInfo.bannerPic,
@@ -42,7 +42,7 @@ const UserProfileModal = ({user, close}) => {
             width: 300,
             height: 300,
         }
-    )
+    );
 
     useEffect(() => {
         setUserInfo(user);
@@ -62,11 +62,11 @@ const UserProfileModal = ({user, close}) => {
             let newInfo = {...userInfo};
             newInfo.profilePic = await toBase64(profilePic);
             setUserInfo(newInfo);
-            setModalEditBanner(false)
+            setModalEditBanner(false);
             setModalEditAvatar(!modalEditAvatar); // todo needs better approach?
-            setAvatarEditor({...avatarEditor, image: profilePic})
+            setAvatarEditor({...avatarEditor, image: profilePic});
         } else {
-            alert('Image is too big or in a wrong format')
+            alert('Image is too big or in a wrong format');
         }
 
     }
@@ -76,12 +76,12 @@ const UserProfileModal = ({user, close}) => {
         if (bannerPic && validateFileSize(bannerPic, 0.4)) {
             let newInfo = {...userInfo};
             newInfo.bannerPic = await toBase64(bannerPic);
-            setUserInfo(newInfo)
-            setModalEditBanner(true)
+            setUserInfo(newInfo);
+            setModalEditBanner(true);
             setModalEditAvatar(!modalEditAvatar); // todo needs better approach?
-            setBannerEditor({...bannerEditor, image: bannerPic})
+            setBannerEditor({...bannerEditor, image: bannerPic});
         } else {
-            alert('Image is too big or in a wrong format')
+            alert('Image is too big or in a wrong format');
         }
     }
 
@@ -120,7 +120,7 @@ const UserProfileModal = ({user, close}) => {
     const handleNewImage = (e) => {
         if (setEditorRef) {
             const croppedImg = editor.getImageScaledToCanvas().toDataURL();
-            if(avatarEditor.image === userInfo.image) {
+            if(!modalEditBanner) {
                 setModalEditBanner(false);
                 setAvatarEditor({
                     ...avatarEditor,
@@ -129,8 +129,8 @@ const UserProfileModal = ({user, close}) => {
                 setUserInfo({
                     ...userInfo,
                     profilePic: croppedImg
-                })
-            } else if (bannerEditor.image === userInfo.image) {
+                });
+            } else if (modalEditBanner) {
                 setModalEditAvatar(false);
                 setBannerEditor({
                     ...bannerEditor,
@@ -138,8 +138,8 @@ const UserProfileModal = ({user, close}) => {
                 });
                 setUserInfo({
                     ...userInfo,
-                    profilePic: croppedImg
-                })
+                    bannerPic: croppedImg
+                });
             }
         }
         handleClickCallback();
@@ -147,18 +147,26 @@ const UserProfileModal = ({user, close}) => {
 
     const handleScale = (e) => {
         const scale = parseFloat(e.target.value);
-        setAvatarEditor({ ...avatarEditor, scale });
+        if(!modalEditBanner) {
+            setAvatarEditor({...avatarEditor, scale});
+        } else if (modalEditBanner) {
+            setBannerEditor({...bannerEditor, scale});
+        }
     }
 
     const handlePositionChange = position => {
-        setAvatarEditor({ ...avatarEditor, position });
+        if(!modalEditBanner){
+            setAvatarEditor({ ...avatarEditor, position });
+        } else if (modalEditBanner) {
+            setBannerEditor({...bannerEditor, position});
+        }
     }
 
     const setEditorRef = (ed) => {
         editor = ed;
     };
 
-    const avatarEditorClose = () => {
+    const avatarEditorClose = () => { // todo clears all the unsaved edit media, should only clear the image when is not applied.
             setUserInfo({...user});
             setModalEditAvatar(false);
             setModalEditBanner(false);
