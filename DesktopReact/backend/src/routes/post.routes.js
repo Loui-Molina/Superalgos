@@ -31,4 +31,13 @@ router
     .route('/replies')
     .post(postController.createReply);
 
+router
+    .route('/repost')
+    .post(postController.repost);
+
+    
+router
+.route('/quote-repost')
+.post(postController.quoteRepost);
+
 module.exports = router;
