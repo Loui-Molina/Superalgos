@@ -51,6 +51,24 @@ const postReactions = async (req, res) => {
     }
 };
 
+const repost = async (req, res) => {
+    try {
+        const result = await postService.repost(req.body);
+        res.send(result);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const quoteRepost = async (req, res) => {
+    try {
+        const result = await postService.quoteRepost(req.body);
+        res.send(result);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 
 module.exports = {
     getPosts,
@@ -59,5 +77,7 @@ module.exports = {
     getReplies,
     createReply,
     getPost,
-    postReactions
+    postReactions,
+    repost,
+    quoteRepost
 };

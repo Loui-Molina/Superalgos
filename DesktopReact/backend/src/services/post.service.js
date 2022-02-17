@@ -71,9 +71,10 @@ const getPost = async (body, res) => {
             queryMessage: JSON.stringify(queryMessage)
         }
 
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(query)
-        )
+        );
+        return responseHelper.responseHelper(response);
 
     } catch (error) {
         console.log(error);
@@ -99,15 +100,15 @@ const createPost = async (body, res) => {
             eventMessage: JSON.stringify(eventMessage)
         }
 
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
+        return responseHelper.responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
     }
 };
-
 
 const getReplies = async (body, res) => {
     try {
@@ -127,10 +128,10 @@ const getReplies = async (body, res) => {
             requestType: 'Query',
             queryMessage: JSON.stringify(queryMessage)
         }
-
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(query)
-        )
+        );
+        return responseHelper.responseHelper(response);
 
     } catch (error) {
         console.log(error);
@@ -157,15 +158,15 @@ const createReply = async (body, res) => {
             eventMessage: JSON.stringify(eventMessage)
         }
 
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
+        return responseHelper.responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
     }
 };
-
 
 const postReactions = async (body, res) => {
     try {
@@ -185,15 +186,70 @@ const postReactions = async (body, res) => {
             requestType: 'Event',
             eventMessage: JSON.stringify(eventMessage)
         }
-        let response = await NT.projects.socialTrading.modules.event.newSocialTradingModulesEvent(event);
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
+        return responseHelper.responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
     }
 }
+
+const quoteRepost = async (body, res) => {
+    try {
+        let eventMessage;
+        let event;
+
+        eventMessage = {
+            eventType: SA.projects.socialTrading.globals.eventTypes.QUOTE_REPOST_SOCIAL_PERSONA_POST,
+            eventId: SA.projects.foundations.utilities.miscellaneousFunctions.genereteUniqueId(),
+            postText: body.postText,
+            timestamp: (new Date()).valueOf()
+        }
+
+        event = {
+            networkService: 'Social Graph',
+            requestType: 'Event',
+            eventMessage: JSON.stringify(eventMessage)
+        }
+
+        let response = await webAppInterface.sendMessage(
+            JSON.stringify(event)
+        );
+        return responseHelper.responseHelper(response);
+    } catch (e) {
+        console.log(e);
+        return {status: 'Ko'};
+    }
+}
+
+const repost = async (body, res) => {
+    try {
+        let eventMessage;
+        let event;
+
+        eventMessage = {
+            eventType: SA.projects.socialTrading.globals.eventTypes.REPOST_SOCIAL_PERSONA_POST,
+            eventId: SA.projects.foundations.utilities.miscellaneousFunctions.genereteUniqueId(),
+            timestamp: (new Date()).valueOf()
+        }
+
+        event = {
+            networkService: 'Social Graph',
+            requestType: 'Event',
+            eventMessage: JSON.stringify(eventMessage)
+        }
+        let response = await webAppInterface.sendMessage(
+            JSON.stringify(event)
+        );
+        return responseHelper.responseHelper(response);
+    } catch (e) {
+        console.log(e);
+        return {status: 'Ko'};
+    }
+}
+
 
 
 module.exports = {
@@ -203,5 +259,7 @@ module.exports = {
     getReplies,
     createReply,
     getPost,
-    postReactions
+    postReactions,
+    repost,
+    quoteRepost
 };

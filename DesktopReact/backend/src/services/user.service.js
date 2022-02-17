@@ -1,3 +1,5 @@
+const responseHelper = require('../helpers/response.utils');
+
 const getSocialPersonaId = async (req, res) => {
     let response = {};
     try {
@@ -58,10 +60,10 @@ const followProfile = async (userProfileId, eventType, res) => {
             requestType: 'Event',
             eventMessage: JSON.stringify(eventMessage)
         }
-
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
+        return responseHelper.responseHelper(response);
     } catch (e) {
         console.log(e);
         return {};
@@ -89,8 +91,7 @@ const loadProfile = async (socialPersonaId, res) => {
         let response = {}
         response.data = result.profileData;
         response.result = result.result;
-
-        return response
+        return responseHelper.responseHelper(response);
 
     } catch (error) {
         console.log(error);
@@ -112,9 +113,10 @@ const saveProfile = async (body, res) => {
             profileMessage: JSON.stringify(profileMessage)
         }
 
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(query)
-        )
+        );
+        return responseHelper.responseHelper(response);
 
     } catch (error) {
         console.log(error);
@@ -138,9 +140,10 @@ const createProfile = async (body, res) => {
             profileMessage: JSON.stringify(profileMessage)
         }
 
-        return await webAppInterface.sendMessage(
+        let response = await webAppInterface.sendMessage(
             JSON.stringify(query)
-        )
+        );
+        return responseHelper.responseHelper(response);
 
     } catch (error) {
         console.log(error);
