@@ -5,7 +5,6 @@ import {updateProfile} from "../../api/profile.httpService";
 import UserProfileModalView from './UserProfileModalView'
 import {STATUS_OK} from "../../api/httpConfig";
 import {validateFileSize} from "../../utils/helper";
-import UserProfileAvatarModal from "./UserProfileAvatarModal";
 
 const UserProfileModal = ({user, close}) => {
     const loadedSocialPersona = useSelector(state => state.profile.socialPersona);
@@ -110,13 +109,7 @@ const UserProfileModal = ({user, close}) => {
         let differentKey = Object.keys(user).find(key => user[key] !== userInfo[key]);
         return !differentKey;
     }
-    /*const UserProfileAvatarModal = () => { // this will be used in the future, on destructuring.
-        return <UserProfileAvatarModal
-            modalEditAvatar={modalEditAvatar}
-            selectProfilePic={selectProfilePic}
-            close={handleClickCallback}
-        />
-    }*/
+
     const handleNewImage = (e) => {
         if (setEditorRef) {
             const croppedImg = editor.getImageScaledToCanvas().toDataURL();
