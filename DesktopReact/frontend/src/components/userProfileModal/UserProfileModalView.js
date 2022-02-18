@@ -17,33 +17,30 @@ import "./UserProfileModal.css"
 import {
     AddAPhotoOutlined,
     CloseOutlined,
-    Input,
-    ZoomInOutlined,
-    ZoomOutOutlined
+    Input
 } from "@mui/icons-material";
 import pfp from "../../images/superalgos.png";
-import AvatarEditor from "react-avatar-editor";
+import UserProfileAvatarModal from "./UserProfileAvatarModal";
 
-const UserProfileModalView = (props) => {
-    const {
-        userInfo,
-        handleChange,
-        selectProfilePic,
-        selectBannerPic,
-        saveProfile,
-        isEquals,
-        errorState,
-        close,
-        modalEditAvatar,
-        modalEditBanner,
-        avatarEditorClose,
-        avatarEditor,
-        bannerEditor,
-        handleNewImage,
-        handleScale,
-        handlePositionChange,
-        setEditorRef
-    } = props;
+const UserProfileModalView = ({ userInfo,
+                                  handleChange,
+                                  selectProfilePic,
+                                  selectBannerPic,
+                                  saveProfile,
+                                  isEquals,
+                                  errorState,
+                                  close,
+                                  modalEditAvatar,
+                                  modalEditBanner,
+                                  avatarEditorClose,
+                                  avatarEditor,
+                                  bannerEditor,
+                                  handleNewImage,
+                                  handleScale,
+                                  handlePositionChange,
+                                  setEditorRef
+                              }) => {
+
     const inputCharLimit = [{name: 50, bio: 150, location: 30, web: 100}] // temporal char limiter constant. Use json file instead?
     const Input = styled('input')({
         display: 'none',
@@ -178,67 +175,18 @@ const UserProfileModalView = (props) => {
         )
     }
 
-    const modalEditAvatarHeader = () => {
-        return (<>
-            <IconButton onClick={avatarEditorClose}>
-                <CloseOutlined/>
-            </IconButton>
-            <Typography>
-                Edit media
-            </Typography>
-            <Button variant="outlined"
-                className="editProfileAvatarHeaderApplyButton"
-                onClick={handleNewImage}>
-                Apply
-            </Button>
-        </>)
-    }
-
-    const modalEditAvatarBody = () => {
-        return (<>
-            <AvatarEditor className="reactAvatarEditor"
-                          image={modalEditBanner ? bannerEditor.image : avatarEditor.image}
-                          width={modalEditBanner ? bannerEditor.width : avatarEditor.width}
-                          height={modalEditBanner ? bannerEditor.height : avatarEditor.height}
-                          borderRadius={modalEditBanner ? bannerEditor.borderRadius : avatarEditor.borderRadius}
-                          scale={parseFloat(modalEditBanner ? bannerEditor.scale : avatarEditor.scale)}
-                          position={modalEditBanner ? bannerEditor.position : avatarEditor.position}
-                          onPositionChange={handlePositionChange}
-                          ref={setEditorRef}
-            />
-        </>)
-    }
-
-    const modalEditAvatarFooter = () => {
-        return (<>
-            <ZoomOutOutlined/>
-            <input className="editProfileAvatarFooterZoom"
-                name="scale"
-                type="range"
-                onChange={handleScale}
-                min={modalEditBanner ? bannerEditor.allowZoomOut ? '0.1' : '1' : avatarEditor.allowZoomOut ? '0.1' : '1'}
-                max="2"
-                step="0.01"
-                defaultValue="1"
-            /><ZoomInOutlined/>
-        </>)
-    }
-
     return (<>
-            <Modal open={modalEditAvatar}
-                   onClose={avatarEditorClose}>
-                <Box className="editProfileAvatar">
-                    <div className="editProfileAvatarHeader">
-                        {modalEditAvatarHeader()}
-                    </div>
-                    <div className="editProfileAvatarBody">
-                        {modalEditAvatarBody()}
-                    </div>
-                    <div className="editProfileAvatarFooter">
-                        {modalEditAvatarFooter()}
-                    </div>
-                </Box>
-            </Modal>
+                    <UserProfileAvatarModal
+                        modalEditAvatar={modalEditAvatar}
+                        modalEditBanner={modalEditBanner}
+                        avatarEditorClose={avatarEditorClose}
+                        handleNewImage={handleNewImage}
+                        avatarEditor={avatarEditor}
+                        bannerEditor={bannerEditor}
+                        handlePositionChange={handlePositionChange}
+                        setEditorRef={setEditorRef}
+                        handleScale={handleScale}
+                    />
             <Modal open
                    onClose={close}>
                 <Box className="editUserBox" component="form" noValidate autoComplete="off">
