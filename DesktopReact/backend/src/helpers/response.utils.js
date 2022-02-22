@@ -4,7 +4,6 @@ exports.responseHelper = function responseHelper(response) {
                 response = { result:'Ko', data:response};
                 console.log("Response error: ", response);
             }
-            console.log("Response: ", response);
             return response;
 
         
