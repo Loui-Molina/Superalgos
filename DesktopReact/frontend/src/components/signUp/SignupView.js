@@ -133,13 +133,14 @@ const SignupView = ({
                                                     label="Github personal access token"
                                                 />
                                                 {errorState.gitToken ? (
-                                                    <FormHelperText id="gitToken-error">Token can't be
-                                                        blank</FormHelperText>
+                                                    <FormHelperText id="gitToken-error">Invalid Github
+                                                        Token</FormHelperText>
                                                 ) : null}
                                             </FormControl>
                                             <Typography> You can see <Link
-                                                href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token'>here</Link> how
-                                                to generate the appropriate token</Typography>
+                                                href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token'>
+                                                here
+                                            </Link> how to generate the appropriate token</Typography>
                                         </div>
                                         <div value={1}>
                                             <FormControl className="signupFormControl"

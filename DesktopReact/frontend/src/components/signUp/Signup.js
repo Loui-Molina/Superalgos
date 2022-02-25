@@ -54,9 +54,15 @@ const Signup = () => {
     const handleChange = (event) => { // todo the name field must not be empty, and if reached max chars give warning message/indicator
         let newValue = event.target.value;
         let field = event.target.id;
-        console.log({field, newValue})
         setErrorState((val) => {
             val[field] = !newValue;
+            if (field === 'gitToken') {
+                debugger
+                const gitTokenRegex = /(ghp_+[a-zA-Z0-9]{36})/g;
+                const isTokenValid = gitTokenRegex.test(newValue) && !!newValue;
+                console.log({isTokenValid})
+                val[field] = !isTokenValid;
+            }
             return val;
         });
 
