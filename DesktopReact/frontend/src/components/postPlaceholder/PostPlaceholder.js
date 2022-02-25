@@ -14,7 +14,6 @@ const PostPlaceholder = ({reloadPostCallback}) => {
     const onButtonClick = async () => {
         let {result} = await createPost({postText: postText}).then(response => response.json());
         if (result === STATUS_OK) {
-            console.log(reloadPostCallback)
             reloadPostCallback && reloadPostCallback();
             return;
         }

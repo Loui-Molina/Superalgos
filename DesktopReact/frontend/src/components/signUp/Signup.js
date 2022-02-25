@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import "./Signup.css"
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {createProfile, updateProfile} from "../../api/profile.httpService";
+import {createProfile, getSocialPersona, updateProfile} from "../../api/profile.httpService";
 import {STATUS_OK} from "../../api/httpConfig";
-import {setActualProfile} from "../../store/slices/Profile.slice";
+import {setActualProfile, setSocialPersona} from "../../store/slices/Profile.slice";
 import SignupView from "./SignupView";
-import {toBase64} from "../../utils/helper";
+import {isObjectEmpty, toBase64} from "../../utils/helper";
 
 const Signup = () => {
     const [errorState, setErrorState] = useState({name: true, gitUsername: true, gitToken: true});
@@ -23,7 +23,12 @@ const Signup = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const isUserLoaded = () => {
+    const isUserLoaded = async () => {
+        if (!isObjectEmpty(userInfo)) return;
+        const socialPersona = await getSocialPersona().then(response => response.json());
+        if (socialPersona.error) return;
+        Object.assign(userInfo, socialPersona);
+        dispatch(setSocialPersona(socialPersona))
         let {name, bio, joined, profilePic, location, bannerPic} = userInfo;
         if (!(name || bio || joined || profilePic || location || bannerPic)) return;
         navigate('/');
@@ -57,10 +62,8 @@ const Signup = () => {
         setErrorState((val) => {
             val[field] = !newValue;
             if (field === 'gitToken') {
-                debugger
                 const gitTokenRegex = /(ghp_+[a-zA-Z0-9]{36})/g;
                 const isTokenValid = gitTokenRegex.test(newValue) && !!newValue;
-                console.log({isTokenValid})
                 val[field] = !isTokenValid;
             }
             return val;
@@ -77,9 +80,7 @@ const Signup = () => {
         let profileData = {
             ...userInfo, joined: new Date().getTime(), originSocialPersonaId: userInfo.nodeId
         };
-        console.log({profileData})
         let {result} = await updateProfile(profileData).then(response => response.json());
-        console.log({result})
         if (result === STATUS_OK) {
             dispatch(setActualProfile(userInfo));
             navigate("/");

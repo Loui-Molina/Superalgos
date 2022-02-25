@@ -17,7 +17,7 @@ const Repost = ({postHash, targetSocialPersonaId, closeModal}) => {
         console.log("reposting with quote")
         setRepost('');
         closeModal && closeModal();
-        /*console.log(postHash)
+        /*
         let {status} = await createReply({
             postText: repost,
             postHash,

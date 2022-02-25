@@ -19,6 +19,7 @@ import {reactedPost} from "../../api/post.httpService";
 import {STATUS_OK} from "../../api/httpConfig";
 import FooterReplyModal from "../footerReplyModal/FooterReplyModal";
 import RepostModal from "../repost/RepostModal";
+import {actionsNav} from "../../utils/constants";
 
 // todo need proper style, and handle from css file
 const StyledBadge = styled(Badge)(({theme}) => ({
@@ -31,39 +32,6 @@ const StyledBadge = styled(Badge)(({theme}) => ({
 
 /* TODO refactor this*/
 const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props needed? review
-    const actionsNav = [
-        {
-            "id": 1,
-            "name": "Love",
-            "icon": "FavoriteBorder"
-        },
-        {
-            "id": 2,
-            "name": "Haha",
-            "icon": "Mood"
-        },
-        {
-            "id": 3,
-            "name": "Wow",
-            "icon": "OutletOutlined"
-        },
-        {
-            "id": 4,
-            "name": "Sad",
-            "icon": "SentimentVeryDissatisfied"
-        },
-        {
-            "id": 5,
-            "name": "Angry",
-            "icon": "SentimentVeryDissatisfiedOutlined"
-        },
-        {
-            "id": 6,
-            "name": "Care",
-            "icon": "AccessibilityNewOutlined"
-        }
-    ]
-    //console.log(actualReaction)
 
     // gets values from httpService.js array reactToPost function
     const [badgeValues, setBadgeValues] = useState([])
@@ -106,7 +74,6 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
         if (result === STATUS_OK) {
             console.log(`correctly reacted with ${name}`);
         }
-        //console.log(`click on button ${name}, id ${id}`)
     }
 
     const toggle = () => {

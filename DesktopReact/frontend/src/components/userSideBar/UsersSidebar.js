@@ -4,8 +4,6 @@ import SuggestedUsers from "../suggestedUsers/SuggestedUsers";
 
 
 const UsersSidebar = () => {
-    const drawerWidth = 240;
-    const showMoreCallback = () => console.log("clicked show more");
     return (
         <Drawer className="usersSidebarContainer"
                 variant="permanent"
