@@ -34,7 +34,7 @@ const Feed = () => {
                         creator: {
                             name: data?.name,
                             profilePic: data?.profilePic,
-                            originSocialPersonaId: data?.nodeId,
+                            originSocialPersonaId: data?.originSocialPersonaId,
                             username: data?.userProfileHandle
                         }
                     }
@@ -51,7 +51,7 @@ const Feed = () => {
         const {
             data,
             result
-        } = await getFeed({originSocialPersonaId: socialPersona.nodeId}).then(response => response.json());
+        } = await getFeed({originSocialPersonaId: socialPersona.originSocialPersonaId}).then(response => response.json());
         if (result === STATUS_OK) {
             await drawFeedPosts(data);
         }

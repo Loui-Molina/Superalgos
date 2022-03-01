@@ -1,3 +1,4 @@
+const {responseHelper} = require("../helpers/response.utils");
 const getFeed = async (req, res) => {
     try {
         let queryMessage = {
@@ -103,7 +104,7 @@ const createPost = async (body, res) => {
         let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
-        return responseHelper.responseHelper(response);
+        return responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
@@ -131,7 +132,7 @@ const getReplies = async (body, res) => {
         let response = await webAppInterface.sendMessage(
             JSON.stringify(query)
         );
-        return responseHelper.responseHelper(response);
+        return responseHelper(response);
 
     } catch (error) {
         console.log(error);
@@ -161,7 +162,7 @@ const createReply = async (body, res) => {
         let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
-        return responseHelper.responseHelper(response);
+        return responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
@@ -175,10 +176,8 @@ const postReactions = async (body, res) => {
         let event;
 
         eventMessage = {
-            eventType: SA.projects.socialTrading.globals.eventTypes.ADD_REACTION_LIKE,
-            originSocialPersonaId: body.originSocialPersonaId,
             eventId: SA.projects.foundations.utilities.miscellaneousFunctions.genereteUniqueId(),
-            targetPostHash: body.postHash,
+            ...body
         }
 
         event = {
@@ -186,10 +185,12 @@ const postReactions = async (body, res) => {
             requestType: 'Event',
             eventMessage: JSON.stringify(eventMessage)
         }
+
         let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
-        return responseHelper.responseHelper(response);
+
+        return responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
@@ -217,7 +218,7 @@ const quoteRepost = async (body, res) => {
         let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
-        return responseHelper.responseHelper(response);
+        return responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
@@ -243,13 +244,12 @@ const repost = async (body, res) => {
         let response = await webAppInterface.sendMessage(
             JSON.stringify(event)
         );
-        return responseHelper.responseHelper(response);
+        return responseHelper(response);
     } catch (e) {
         console.log(e);
         return {status: 'Ko'};
     }
 }
-
 
 
 module.exports = {

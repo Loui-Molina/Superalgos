@@ -73,7 +73,7 @@ const UserProfileModal = ({user, close}) => {
     const saveProfile = async () => {
         let {result} = await updateProfile({
             ...userInfo,
-            originSocialPersonaId: loadedSocialPersona.nodeId
+            originSocialPersonaId: loadedSocialPersona.originSocialPersonaId
         }).then(response => response.json());
         if (result === STATUS_OK) {
             dispatch(setActualProfile(userInfo));
