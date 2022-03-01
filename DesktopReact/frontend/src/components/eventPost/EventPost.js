@@ -8,7 +8,6 @@ import pic from "../../images/superalgos.png";
 import PostFooter from "../PostFooter/PostFooter";
 
 const EventPost = ({postData}) => {
-    console.log(postData)
     const {postId: postIdParameter} = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();

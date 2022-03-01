@@ -19,6 +19,8 @@ import {reactedPost} from "../../api/post.httpService";
 import {STATUS_OK} from "../../api/httpConfig";
 import FooterReplyModal from "../footerReplyModal/FooterReplyModal";
 import RepostModal from "../repost/RepostModal";
+import {actionsNav} from "../../utils/constants";
+import {useSelector} from "react-redux";
 
 // todo need proper style, and handle from css file
 const StyledBadge = styled(Badge)(({theme}) => ({
@@ -31,39 +33,6 @@ const StyledBadge = styled(Badge)(({theme}) => ({
 
 /* TODO refactor this*/
 const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props needed? review
-    const actionsNav = [
-        {
-            "id": 1,
-            "name": "Love",
-            "icon": "FavoriteBorder"
-        },
-        {
-            "id": 2,
-            "name": "Haha",
-            "icon": "Mood"
-        },
-        {
-            "id": 3,
-            "name": "Wow",
-            "icon": "OutletOutlined"
-        },
-        {
-            "id": 4,
-            "name": "Sad",
-            "icon": "SentimentVeryDissatisfied"
-        },
-        {
-            "id": 5,
-            "name": "Angry",
-            "icon": "SentimentVeryDissatisfiedOutlined"
-        },
-        {
-            "id": 6,
-            "name": "Care",
-            "icon": "AccessibilityNewOutlined"
-        }
-    ]
-    //console.log(actualReaction)
 
     // gets values from httpService.js array reactToPost function
     const [badgeValues, setBadgeValues] = useState([])
@@ -74,6 +43,7 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
     const [repostQuoteModal, setRepostQuoteModal] = useState(false);
     const openRepost = Boolean(repost);
     const handleClickCallback = () => setRepostQuoteModal(!repostQuoteModal);
+    const user = useSelector(state => state.profile.actualUser);
 
     // const dispatch = useDispatch();
     const BadgeCounterValue = () => {
@@ -102,18 +72,23 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
 
     const handleReactions = async (e, id, name) => {
         e.stopPropagation();
-        let {result} = await reactedPost({eventType: 100 + (+id), postId}).then(response => response.json());
+        let {result} = await reactedPost({
+            originSocialPersonaId: user.originSocialPersonaId,
+            eventType: 100 + (+id),
+            targetPostHash: postId,
+            targetSocialPersonaId: postData.creator.originSocialPersonaId
+        }).then(response => response.json());
+        console.log({result})
         if (result === STATUS_OK) {
             console.log(`correctly reacted with ${name}`);
         }
-        //console.log(`click on button ${name}, id ${id}`)
     }
 
-    const toggle = () => {
+    const reactionsToggle = () => {
         setSpeedDialIsOpened(!speedDialIsOpened);
     }
 
-    const handleClick = (event) => {
+    const handleRepostClick = (event) => {
         setRepost(event.currentTarget);
     };
     const handleClose = () => {
@@ -172,8 +147,8 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
                     FabProps={{ /*Access to props of SpeedDial*/
                         style: {...dialStyle}
                     }}
-                    onOpen={toggle}
-                    onClose={toggle}
+                    onOpen={reactionsToggle}
+                    onClose={reactionsToggle}
                     color="secondary"
                     ariaLabel="SpeedDial"
                     icon={<StyledBadge
@@ -210,7 +185,7 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
                                 aria-controls={openRepost ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={openRepost ? 'true' : undefined}
-                                onClick={handleClick} size="small">
+                                onClick={handleRepostClick} size="small">
                         <Autorenew/>
                     </IconButton>
                     <Menu
