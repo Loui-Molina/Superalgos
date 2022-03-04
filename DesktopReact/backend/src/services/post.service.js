@@ -1,4 +1,5 @@
 const {responseHelper} = require("../helpers/response.utils");
+
 const getFeed = async (req, res) => {
     try {
         let queryMessage = {
