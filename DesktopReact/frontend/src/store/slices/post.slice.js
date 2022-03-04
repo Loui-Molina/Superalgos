@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit'
 export const PostSlice = createSlice({
     name: 'post',
     initialState: {
-        postsList: {},
+        postsList: [],
         selectedPost: {},
         modalPost: {}
     },

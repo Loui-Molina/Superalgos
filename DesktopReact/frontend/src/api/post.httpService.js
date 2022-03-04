@@ -12,8 +12,8 @@ function getPost(queryParams) {
     return httpRequest('/posts/post', GET, undefined, queryParams);
 }
 
-function getFeed() {
-    return httpRequest('/posts/feed', GET, undefined);
+function getFeed(queryParams) {
+    return httpRequest('/posts/feed', GET, undefined, queryParams);
 }
 
 function reactedPost(body) {

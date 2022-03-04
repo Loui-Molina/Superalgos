@@ -1,6 +1,7 @@
 import "./UserProfile.css"
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux'
+import { useDispatch } from 'redux';
 import {useLocation} from 'react-router-dom'
 import {Alert, Snackbar, Stack} from "@mui/material";
 import UserProfileHeader from "../userProfileHeader/UserProfileHeader";
@@ -8,14 +9,17 @@ import Post from "../post/Post";
 import PostsFeed from "../postsFeed/PostsFeed";
 import {getPosts} from "../../api/post.httpService";
 import {getProfile} from "../../api/profile.httpService";
+import { setPostList } from '../../store/slices/post.slice'
 import {STATUS_OK} from "../../api/httpConfig";
 
 const UserProfile = () => {
     const [posts, setPosts] = useState([]);
+    const dispatch = useDispatch();
     const [postLoading, setPostLoading] = useState(true);
     const [openSnack, setSnackOpen] = useState(false);
     const [externalProfile, setExternalProfile] = useState();
-    const actualUser = useSelector(state => state.profile.actualUser)
+    const actualUser = useSelector(state => state.profile.actualUser);
+    const postsList = useSelector( state => state.post.postsList);
     const {search} = useLocation();
     const urlSearchParams = React.useMemo(() => new URLSearchParams(search), [search]);
     const queryParams = {
@@ -43,6 +47,7 @@ const UserProfile = () => {
     const drawPosts = (rawPosts) => {
         const mappedPosts = rawPosts.map((post) => {
             const postData = {
+                index: post.index,
                 postText: post.postText,
                 originPostHash: post.originPostHash,
                 reactions: post.reactions,
@@ -59,16 +64,30 @@ const UserProfile = () => {
                          postData={postData}/>
         });
         setPosts(mappedPosts)
+        dispatch( setPostList(postsList.concat(mappedPosts)) );
     }
 
     const loadPosts = async () => {
         setPostLoading(true)
+        const queryParams = {
+            tailIndex: postsList[postsList.length - 1].index,
+            pagination: 10
+        }
         const {data, result} = await getPosts().then(response => response.json());
         if (result === STATUS_OK) {
             drawPosts(data);
         }
         setPostLoading(false);
     }
+
+    const onScroll = () => {
+        if (listInnerRef.current) {
+          const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+          if (scrollTop + clientHeight === scrollHeight) {
+           loadPosts();
+          }
+        }
+      };
 
     const handleSnackClose = (event, reason) => {
         if (reason === 'clickaway') return;
@@ -80,12 +99,13 @@ const UserProfile = () => {
                justifyContent="flex-start"
                alignItems="center"
                spacing={1}
-               className="middleSection">
+               className="middleSection"
+               onScroll={onScroll}>
             <UserProfileHeader user={externalProfile ? externalProfile : actualUser}
                                isExternalProfile={!!externalProfile}/>
             {
                 !externalProfile
-                    ? <PostsFeed posts={posts} loading={postLoading}/>
+                    ? <PostsFeed posts={postsList} loading={postLoading}/>
                     : <></>
             }
         </Stack>

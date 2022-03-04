@@ -3,8 +3,8 @@ const getFeed = async (req, res) => {
         let queryMessage = {
             queryType: SA.projects.socialTrading.globals.queryTypes.EVENTS,
             originSocialPersonaId: req.originSocialPersonaId,
-            initialIndex: SA.projects.socialTrading.globals.queryConstants.INITIAL_INDEX_LAST,
-            amountRequested: 20,
+            initialIndex: req.tailIndex !== 0 ? req.tailIndex :  SA.projects.socialTrading.globals.queryConstants.INITIAL_INDEX_LAST,
+            amountRequested: req.pagination ? req.pagination : 20,
             direction: SA.projects.socialTrading.globals.queryConstants.DIRECTION_PAST
         }
 
@@ -26,13 +26,12 @@ const getFeed = async (req, res) => {
 const getPosts = async (body, res) => {
 
     try {
-
         let queryMessage = {
             queryType: SA.projects.socialTrading.globals.queryTypes.POSTS,
             originSocialPersonaId: body?.originSocialPersonaId,
             targetSocialPersonaId: body?.targetSocialPersonaId,
-            initialIndex: SA.projects.socialTrading.globals.queryConstants.INITIAL_INDEX_LAST,
-            amountRequested: 20,
+            initialIndex: body.tailIndex !== 0? req.tailIndex : SA.projects.socialTrading.globals.queryConstants.INITIAL_INDEX_LAST,
+            amountRequested: body.pagination? req.pagination : 20,
             direction: SA.projects.socialTrading.globals.queryConstants.DIRECTION_PAST
         }
 
@@ -54,7 +53,6 @@ const getPosts = async (body, res) => {
 const getPost = async (body, res) => {
 
     try {
-
         let queryMessage = {
             queryType: SA.projects.socialTrading.globals.queryTypes.POST,
             originSocialPersonaId: undefined,
