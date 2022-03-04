@@ -315,6 +315,9 @@ exports.newSocialTradingModulesEvent = function newSocialTradingModulesEvent() {
                 thisObject.eventType === SA.projects.socialTrading.globals.eventTypes.ADD_REACTION_CARE
             ) {
 
+                if (targetSocialPersona === undefined) {
+                    throw ('Target Social Persona Not Found')
+                }
                 let socialEntityId
                 if (targetSocialTradingBot !== undefined) {
                     targetPost = targetSocialTradingBot.posts.get(thisObject.targetPostHash)

@@ -19,6 +19,7 @@ const Post = ({postData}) => {
         postText,
         originPostHash,
         reactions,
+        reaction,
         postType,
         repliesCount,
         creator: {
@@ -60,7 +61,7 @@ const Post = ({postData}) => {
                     </div>
                     <div className="postFooter">
                         <PostFooter postData={postData} postId={originPostHash} reactions={reactions}
-                                    actualReaction={reactions}/>
+                                    actualReaction={reaction}/>
                     </div>
                 </div>
             </div>

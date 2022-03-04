@@ -75,7 +75,7 @@ const getPost = async (body, res) => {
         let response = await webAppInterface.sendMessage(
             JSON.stringify(query)
         );
-        return responseHelper.responseHelper(response);
+        return responseHelper(response);
 
     } catch (error) {
         console.log(error);

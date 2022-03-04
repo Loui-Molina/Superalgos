@@ -9,6 +9,10 @@
     position: relative;
 }
 
+.MuiSpeedDial-fab, .MuiSpeedDial-fab:hover{
+    background-color: white !important;
+}
+
 .footerCommentContainer {
     display: flex;
     justify-content: space-between;

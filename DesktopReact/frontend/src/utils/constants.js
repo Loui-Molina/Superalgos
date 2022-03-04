@@ -2,32 +2,32 @@ const actionsNav = [
     {
         "id": 1,
         "name": "Love",
-        "icon": "FavoriteBorder"
+        "icon": "HEART"
     },
     {
         "id": 2,
         "name": "Haha",
-        "icon": "Mood"
+        "icon": "LAUGH"
     },
     {
         "id": 3,
         "name": "Wow",
-        "icon": "OutletOutlined"
+        "icon": "SURPRISED"
     },
     {
         "id": 4,
         "name": "Sad",
-        "icon": "SentimentVeryDissatisfied"
+        "icon": "SAD"
     },
     {
         "id": 5,
         "name": "Angry",
-        "icon": "SentimentVeryDissatisfiedOutlined"
+        "icon": "ANGRY"
     },
     {
         "id": 6,
         "name": "Care",
-        "icon": "AccessibilityNewOutlined"
+        "icon": "CARE"
     }
 ]
 

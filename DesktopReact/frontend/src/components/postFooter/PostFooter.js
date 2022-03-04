@@ -9,8 +9,7 @@ import {
     MessageOutlined,
     Mood,
     OutletOutlined,
-    SentimentVeryDissatisfied,
-    SentimentVeryDissatisfiedOutlined,
+    SentimentVeryDissatisfied, SentimentVeryDissatisfiedOutlined,
     ThumbUp
 } from "@mui/icons-material";
 import styled from "@emotion/styled";
@@ -102,30 +101,30 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
         /*return */
     }
 
-    const getIcon = (icon) => {
+    const getIcon = (icon, color = 'error') => {
         switch (icon) {
-            case "FavoriteBorder":
-                return <FavoriteBorder/>
-            case "Mood":
-                return <Mood/>
-            case "OutletOutlined":
-                return <OutletOutlined/>
-            case "SentimentVeryDissatisfied":
-                return <SentimentVeryDissatisfied/>
-            case "SentimentVeryDissatisfiedOutlined":
-                return <SentimentVeryDissatisfiedOutlined/>
-            case "AccessibilityNewOutlined":
-                return <AccessibilityNewOutlined/>
+            case "HEART":
+                return '❤️'
+            case "LAUGH":
+                return '👍'
+            case "SURPRISED":
+                return '😲'
+            case "SAD":
+                return '😔'
+            case "ANGRY":
+                return '😠'
+            case "CARE":
+                return '🤗'
             default:
                 return null
         }
     }
 
-    const FooterButton = (id, name, icon, badgeCounter) => {
+    const FooterButton = (id, name, icon, badgeCounter, color) => {
         return <SpeedDialAction
             key={id}
             id={id}
-            FabProps={{style: {...dialStyle}}}
+            FabProps={{style: {...dialStyle, backgroundColor: "limegreen"}}}
             icon={
                 <StyledBadge
                     badgeContent={badgeCounter} /*need pass the index of the id reaction*/
@@ -154,15 +153,14 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
                     icon={<StyledBadge
                         color="primary"
                         badgeContent={likeBadgeValue}>
-                        <ThumbUp
-                            color="action"
-                            fontSize="small"
-                            onClick={handleReactions}>
-                        </ThumbUp>
+                        <div onClick={handleReactions}>
+                            👍
+                        </div>
                     </StyledBadge>}
                     direction="right">
                     {speedDialIsOpened && (actionsNav.map(e => {
                         const {id, name, badgeCounter, icon} = e;
+                        console.log({e});
                         return FooterButton(String(id), name, icon, badgeCounter)
                     }))}
                 </SpeedDial>
