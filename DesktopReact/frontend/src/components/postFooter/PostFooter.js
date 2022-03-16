@@ -34,15 +34,16 @@ const StyledBadge = styled(Badge)(({theme}) => ({
 const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props needed? review
 
     // gets values from httpService.js array reactToPost function
-    const [badgeValues, setBadgeValues] = useState([])
+    // const [badgeValues, setBadgeValues] = useState([]) todo remove
     const [likeBadgeValue, setLikeBadgeValue] = useState()
     const [replyModal, setReplyModal] = useState(false)
     const [speedDialIsOpened, setSpeedDialIsOpened] = useState(false)
-    const [repost, setRepost] = React.useState(null);
+    const [repost, setRepost] = useState(null);
     const [repostQuoteModal, setRepostQuoteModal] = useState(false);
     const openRepost = Boolean(repost);
     const handleClickCallback = () => setRepostQuoteModal(!repostQuoteModal);
     const user = useSelector(state => state.profile.actualUser);
+    const [selectedReaction, setSelectedReaction] = useState();
 
     // const dispatch = useDispatch();
     const BadgeCounterValue = () => {
@@ -79,7 +80,8 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
         }).then(response => response.json());
         console.log({result})
         if (result === STATUS_OK) {
-            console.log(`correctly reacted with ${name}`);
+            console.log(`correctly reacted with ${name} and id ${id}`);
+            setSelectedReaction(parseInt(id, 10));
         }
     }
 
@@ -124,7 +126,7 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
         return <SpeedDialAction
             key={id}
             id={id}
-            FabProps={{style: {...dialStyle, backgroundColor: "limegreen"}}}
+            FabProps={{style: {...dialStyle, backgroundColor: color}}}
             icon={
                 <StyledBadge
                     badgeContent={badgeCounter} /*need pass the index of the id reaction*/
@@ -160,17 +162,19 @@ const PostFooter = ({postId, reactions, actualReaction, postData}) => { // props
                     direction="right">
                     {speedDialIsOpened && (actionsNav.map(e => {
                         const {id, name, badgeCounter, icon} = e;
-                        console.log({e});
-                        return FooterButton(String(id), name, icon, badgeCounter)
+                        const selected = id === selectedReaction;
+                        console.log({e, selected, selectedReaction});
+                        return FooterButton(String(id), name, icon, badgeCounter, selected ? 'limegreen' : '')
                     }))}
                 </SpeedDial>
             </div>
             <div className="footerCommentContainer">
                 <div className="postFooterComment">
-                    <IconButton className="commentIconButton" size="small"
+                    <div onClick={HandleCommentContainer}>💬</div>
+                    {/*<IconButton className="commentIconButton" size="small"
                                 onClick={HandleCommentContainer}>
                         <MessageOutlined/>
-                    </IconButton>
+                    </IconButton>*/}
                     {replyModal ?
                         <FooterReplyModal
                             post={postData}

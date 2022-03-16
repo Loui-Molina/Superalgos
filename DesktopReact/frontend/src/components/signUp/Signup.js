@@ -80,7 +80,7 @@ const Signup = () => {
         let profileData = {
             ...userInfo, joined: new Date().getTime(), originSocialPersonaId: userInfo.originSocialPersonaId
         };
-        let {result} = await updateProfile(profileData).then(response => response.json());
+        let {result} = await createProfile(profileData).then(response => response.json());
         if (result === STATUS_OK) {
             dispatch(setActualProfile(userInfo));
             navigate("/");
